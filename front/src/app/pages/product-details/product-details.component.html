@@ -1,0 +1,21 @@
+<div class="p-4">
+  <h2>Product Details</h2>
+
+  <div *ngIf="loading">Loading...</div>
+  <div *ngIf="!loading && product">
+    <p><strong>Name:</strong> {{ product.name }}</p>
+    <p><strong>Price:</strong> {{ product.description }}</p>
+    <p><strong>Price:</strong> {{ product.price | currency }}</p>
+    <p><strong>Stock:</strong> {{ product.quantityInStock }}</p>
+    <p><strong>Category:</strong> {{ product.category || '-' }}</p>
+    <div *ngIf="product.imageUrl">
+      <img [src]="'https://localhost:7143/' + product.imageUrl" width="100" />
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !product">
+    <p>Product not found.</p>
+  </div>
+
+  <button routerLink="/products">Back to List</button>
+</div>

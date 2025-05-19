@@ -1,0 +1,50 @@
+<div class="p-4">
+  <h2>{{ isEdit ? 'Edit Product' : 'New Product' }}</h2>
+
+  <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+    <!-- Name -->
+    <label>Name:</label><br />
+    <input [(ngModel)]="product.name" name="name" required #name="ngModel" /><br />
+    <div *ngIf="name.invalid && name.touched" class="text-red-500">
+      Name is required.
+    </div><br />
+
+    <!-- Description -->
+    <label>Description:</label><br />
+    <input [(ngModel)]="product.description" name="description"  #description="ngModel" /><br />
+
+    <!-- Price -->
+    <label>Price:</label><br />
+    <input type="number" [(ngModel)]="product.price" name="price" required min="0.01" #price="ngModel" /><br />
+    <div *ngIf="price.invalid && price.touched" class="text-red-500">
+      Price must be a positive number.
+    </div><br />
+
+    <!-- Stock -->
+    <label>Stock:</label><br />
+    <input type="number" [(ngModel)]="product.quantityInStock" name="quantityInStock" required min="1" #stock="ngModel" /><br />
+    <div *ngIf="stock.invalid && stock.touched" class="text-red-500">
+      Stock is required and must be 0 or more.
+    </div><br />
+
+   <!-- Category -->
+<label>Category:</label><br />
+<select [(ngModel)]="product.category" name="category"  #category="ngModel">
+  <option value="" disabled selected>Select a category</option>
+  <option *ngFor="let option of categoryOptions" [value]="option">{{ option }}</option>
+</select><br />
+
+    <!-- Image -->
+    <label>Image:</label><br />
+    <input type="file" (change)="onFileSelected($event)" /><br /><br />
+
+    <!-- Buttons -->
+    <button type="submit" [disabled]="productForm.invalid">
+      {{ isEdit ? 'Update' : 'Create' }}
+    </button>
+    <button type="button" routerLink="/products">Cancel</button>
+  </form>
+</div>
+<div class="toast" *ngIf="toastMessage">
+  {{ toastMessage }}
+</div>

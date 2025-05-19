@@ -1,0 +1,72 @@
+<div class="p-4">
+    <h2>Products</h2>
+  
+    <div class="my-2">
+  <input [(ngModel)]="search" (keyup.enter)="onSearch()" placeholder="Search by name..." />
+  <button (click)="onSearch()">Search</button>
+
+  <label style="margin-left: 1rem;">Filter by Category:</label>
+  <select [(ngModel)]="selectedCategory" (change)="onSearch()">
+    <option value="">All</option>
+    <option *ngFor="let option of categoryOptions" [value]="option">{{ option }}</option>
+  </select>
+</div>
+
+
+    <div *ngIf="loading">Loading...</div>
+  
+    <button routerLink="/products/new">Add Product</button>
+<div class="table-container">
+    <table class="table" *ngIf="products.length" border="1" cellpadding="8">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Stock</th>
+          <th>Category</th>
+          <th>Image</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.name }}</td>
+          <td>{{ product.description }}</td>
+          <td>{{ product.price | currency }}</td>
+          <td>{{ product.quantityInStock }}</td>
+          <td>{{ product.category || '-' }}</td>
+          <td>
+            <img *ngIf="product.imageUrl" [src]="'https://localhost:7143/' + product.imageUrl" width="50" />
+          </td>
+          <td>
+            <button [routerLink]="['/products', product.id]">Details</button>
+            <button [routerLink]="['/products', product.id, 'edit']">Edit</button>
+
+            <button (click)="deleteProduct(product.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+        <div *ngIf="!products.length && !loading">No products found.</div>
+  <div class="pagination-controls" *ngIf="total > pageSize">
+  <button (click)="previousPage()" [disabled]="page === 1">Previous</button>
+
+  <span>Page {{ page }} of {{ totalPages }}</span>
+
+  <button (click)="nextPage()" [disabled]="page === totalPages">Next</button>
+</div>
+<div class="pageSize">
+<label>
+  Page size:
+  <select [(ngModel)]="pageSize" (change)="onPageSizeChange()">
+    <option [value]="5">5</option>
+    <option [value]="10">10</option>
+    <option [value]="25">25</option>
+    <option [value]="50">50</option>
+  </select>
+</label>
+</div>
+</div>
+  </div>
+
